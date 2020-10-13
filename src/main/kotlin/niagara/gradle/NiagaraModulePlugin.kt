@@ -19,6 +19,7 @@ class NiagaraModulePlugin : Plugin<Project> {
 
         project.plugins.apply("org.jetbrains.kotlin.jvm")
         project.plugins.apply("org.jetbrains.kotlin.kapt")
+        project.plugins.apply("org.jetbrains.kotlin.plugin.serialization")
 
         if (project.parent != null) {
             project.group = project.parent!!.group
@@ -32,9 +33,15 @@ class NiagaraModulePlugin : Plugin<Project> {
             it.dir("$niagaraHome/modules")
         }
 
-        val uberJar = project.configurations.create("uberJar")
+        val nmodule = project.configurations.create("nmodule")
+        val uberjar = project.configurations.create("uberjar")
+        project.configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME) {
+            it.extendsFrom(nmodule)
+            it.extendsFrom(uberjar)
+        }
 
-        val processResources = project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME, ProcessResources::class.java).get()
+        val processResources =
+            project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME, ProcessResources::class.java).get()
 
         val generateModuleXml = project.tasks.register("generateModuleXml", GenerateModuleXml::class.java) { task ->
             val moduleInclude = File(project.projectDir, "module-include.xml")
@@ -56,10 +63,10 @@ class NiagaraModulePlugin : Plugin<Project> {
         }
 
         project.afterEvaluate {
-            jar.get().from(uberJar.map { project.zipTree(it) })
+            jar.get().from(uberjar.map { project.zipTree(it) })
         }
 
-        var sourcesJar = project.tasks.register("sourcesJar", Jar::class.java) { sourcesJar ->
+        val sourcesJar = project.tasks.register("sourcesJar", Jar::class.java) { sourcesJar ->
             sourcesJar.archiveVersion.set("")
             sourcesJar.archiveClassifier.set("sources")
             val main = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.named("main")
@@ -76,7 +83,7 @@ class NiagaraModulePlugin : Plugin<Project> {
             task.dependsOn(install)
         }
 
-        project.dependencies.add("kapt", "Tridium:nre:4")
-        project.dependencies.add("compileOnly", "Tridium:nre:4")
+        project.dependencies.add("kapt", "Tridium:nre:4.0")
+        project.dependencies.add("implementation", "Tridium:nre:4.0")
     }
 }

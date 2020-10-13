@@ -3,7 +3,6 @@ package niagara.gradle
 import com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.ModuleDependency
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.*
 import org.gradle.api.tasks.Optional
 import java.io.File
@@ -55,14 +54,7 @@ open class GenerateModuleXml : DefaultTask() {
         sw.writeAttribute("buildHost", "UNKNOWN")
         // dependencies
         sw.writeStartElement("dependencies")
-        if (project.group != "JetBrains") {
-            sw.writeStartElement("dependency")
-            sw.writeAttribute("name", "xKtStdlib-rt")
-            sw.writeAttribute("vendor", "JetBrains")
-            sw.writeAttribute("vendorVersion", "1.4")
-            sw.writeEndElement()
-        }
-        project.configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME).dependencies
+        project.configurations.getByName("nmodule").dependencies
                 .filter {
                     it.group?.matches(Regex("^\\w+$")) ?: false
                 }
