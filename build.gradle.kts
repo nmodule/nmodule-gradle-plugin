@@ -53,6 +53,10 @@ spotless {
         target("**/*.gradle.kts")
         ktlint().userData(ktlintUserData)
     }
+
+    freshmark {
+        target("**/*.md")
+    }
 }
 
 githook {
