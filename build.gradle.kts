@@ -7,6 +7,7 @@ plugins {
     id("maven-publish")
     id("com.diffplug.spotless") version "5.6.1"
     id("com.star-zero.gradle.githook") version "1.2.1"
+    id("com.gradle.plugin-publish") version "0.12.0"
 }
 
 group = "niagara"
@@ -23,8 +24,16 @@ dependencies {
 gradlePlugin {
     plugins.create("niagaraModulePlugin") {
         id = "niagara.module"
+        displayName = "Niagara Module Gradle Plugin"
+        description = "A gradle plugin to build Niagara module in Kotlin"
         implementationClass = "niagara.gradle.NiagaraModulePlugin"
     }
+}
+
+pluginBundle {
+    website = "https://github.com/nmodule/nmodule-gradle-plugin"
+    vcsUrl = "https://github.com/nmodule/nmodule-gradle-plugin"
+    tags = listOf("niagara", "nmodule", "kotlin")
 }
 
 spotless {
