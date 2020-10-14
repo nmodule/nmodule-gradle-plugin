@@ -5,6 +5,7 @@ plugins {
     kotlin("jvm") version "1.3.71"
     id("java-gradle-plugin")
     id("maven-publish")
+    id("org.jetbrains.changelog") version "0.6.2"
     id("com.diffplug.spotless") version "5.6.1"
     id("com.star-zero.gradle.githook") version "1.2.1"
     id("com.gradle.plugin-publish") version "0.12.0"
