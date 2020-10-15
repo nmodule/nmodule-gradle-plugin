@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.4.10" apply false
     kotlin("plugin.serialization") version "1.4.10" apply false
-    id("niagara.module") version "0.0.1-SNAPSHOT" apply false
+    id("niagara.module") version "0.1.0" apply false
 }
 
 group = "Vendor"
