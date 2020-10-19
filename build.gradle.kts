@@ -11,7 +11,7 @@ plugins {
     id("com.gradle.plugin-publish") version "0.12.0"
 }
 
-group = "niagara"
+group = "com.restartech"
 version = "0.1.0"
 
 repositories {
@@ -24,7 +24,7 @@ dependencies {
 
 gradlePlugin {
     plugins.create("niagaraModulePlugin") {
-        id = "niagara.module"
+        id = "com.restartech.nmodule"
         displayName = "Niagara Module Gradle Plugin"
         description = "A gradle plugin to build Niagara module in Kotlin"
         implementationClass = "niagara.gradle.NiagaraModulePlugin"
