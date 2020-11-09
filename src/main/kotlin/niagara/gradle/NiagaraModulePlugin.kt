@@ -34,6 +34,7 @@ class NiagaraModulePlugin : Plugin<Project> {
         }
 
         val nmodule = project.configurations.create("nmodule")
+        val nmoduleDepOnly = project.configurations.create("nmoduleDepOnly")
         val uberjar = project.configurations.create("uberjar")
         project.configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME) {
             it.extendsFrom(nmodule)

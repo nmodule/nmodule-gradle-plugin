@@ -54,24 +54,26 @@ open class GenerateModuleXml : DefaultTask() {
         sw.writeAttribute("buildHost", "UNKNOWN")
         // dependencies
         sw.writeStartElement("dependencies")
-        project.configurations.getByName("nmodule").dependencies
-                .filter {
-                    it.group?.matches(Regex("^\\w+$")) ?: false
-                }
-                .forEach { dep ->
-                    sw.writeStartElement("dependency")
-                    var suffix = ""
-                    if (dep is ModuleDependency) {
-                        if (dep.artifacts.isNotEmpty()) {
-                            val classifier = dep.artifacts.first().classifier
-                            suffix += "-$classifier"
-                        }
+        val nmodule = project.configurations.getByName("nmodule")
+        val nmoduleDepOnly = project.configurations.getByName("nmoduleDepOnly")
+        (nmodule.dependencies + nmoduleDepOnly.dependencies)
+            .filter {
+                it.group?.matches(Regex("^\\w+$")) ?: false
+            }
+            .forEach { dep ->
+                sw.writeStartElement("dependency")
+                var suffix = ""
+                if (dep is ModuleDependency) {
+                    if (dep.artifacts.isNotEmpty()) {
+                        val classifier = dep.artifacts.first().classifier
+                        suffix += "-$classifier"
                     }
-                    sw.writeAttribute("name", dep.name + suffix)
-                    sw.writeAttribute("vendor", dep.group)
-                    sw.writeAttribute("vendorVersion", dep.version)
-                    sw.writeEndElement()
                 }
+                sw.writeAttribute("name", dep.name + suffix)
+                sw.writeAttribute("vendor", dep.group)
+                sw.writeAttribute("vendorVersion", dep.version)
+                sw.writeEndElement()
+            }
         if (option.runtimeProfile == "wb") {
             sw.writeStartElement("dependency")
             sw.writeAttribute("name", "${option.moduleName}-rt")
