@@ -18,8 +18,6 @@ class NiagaraModulePlugin : Plugin<Project> {
         val niagaraHome = System.getenv("niagara_home") ?: project.logger.error("niagara_home env variable not defined")
 
         project.plugins.apply("org.jetbrains.kotlin.jvm")
-        project.plugins.apply("org.jetbrains.kotlin.kapt")
-        project.plugins.apply("org.jetbrains.kotlin.plugin.serialization")
 
         if (project.parent != null) {
             project.group = project.parent!!.group
@@ -83,8 +81,5 @@ class NiagaraModulePlugin : Plugin<Project> {
         project.tasks.named(JavaBasePlugin.BUILD_TASK_NAME) { task ->
             task.dependsOn(install)
         }
-
-        project.dependencies.add("kapt", "Tridium:nre:4.0")
-        project.dependencies.add("implementation", "Tridium:nre:4.0")
     }
 }

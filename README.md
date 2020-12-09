@@ -26,9 +26,10 @@ arrayOf("rt", "wb", "ux", "se").forEach { profile ->
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.10" apply false
-    kotlin("plugin.serialization") version "1.4.10" apply false
-    id("com.restartech.nmodule") version "0.1.0" apply false
+    kotlin("jvm") version "1.4.21" apply false
+    kotlin("kapt") version "1.4.21" apply false
+    kotlin("plugin.serialization") version "1.4.21" apply false
+    id("com.restartech.nmodule") version "0.2.0" apply false
 }
 
 group = "Vendor"
@@ -43,8 +44,12 @@ allprojects {
 
 subprojects {
     apply(plugin = "com.restartech.nmodule")
+    apply(plugin = "org.jetbrains.kotlin.kapt")
+    apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
     dependencies {
         "implementation"(kotlin("stdlib-jdk8"))
+        "implementation"("Tridium:nre:4.0")
+        "kapt"("Tridium:nre:4.0")
         "nmodule"("Tridium:baja:4.0")
     }
     tasks.withType<KotlinCompile> {
