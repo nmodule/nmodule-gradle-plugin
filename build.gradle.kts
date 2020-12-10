@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.restartech"
-version = "0.2.0-SNAPSHOT"
+version = "0.2.0"
 
 repositories {
     // maven("https://maven.aliyun.com/repository/central/")
