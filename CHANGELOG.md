@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0]
+### Changed
+- Update gradle to 7.3
+- Disable auto install sources
+- Update spotless
+### Fixed
+- jar duplicatesStrategy
+
 ## [0.2.0]
 ### Added
 - nmoduleDepOnly configuration

@@ -5,10 +5,10 @@ plugins {
     kotlin("jvm") version embeddedKotlinVersion
     id("java-gradle-plugin")
     id("maven-publish")
-    id("org.jetbrains.changelog") version "0.6.2"
-    id("com.diffplug.spotless") version "5.8.2"
+    id("org.jetbrains.changelog") version "1.3.1"
+    id("com.diffplug.spotless") version "5.17.1"
     id("com.star-zero.gradle.githook") version "1.2.1"
-    id("com.gradle.plugin-publish") version "0.12.0"
+    id("com.gradle.plugin-publish") version "0.18.0"
 }
 
 group = "com.restartech"
@@ -41,18 +41,19 @@ spotless {
     encoding = Charset.forName("UTF-8")
     lineEndings = LineEnding.UNIX
 
+    val ktlintVersion = "0.41.0"
     val ktlintUserData = mapOf(
         "disabled_rules" to "no-wildcard-imports,import-ordering"
     )
 
     kotlin {
         target("**/*.kt")
-        ktlint().userData(ktlintUserData)
+        ktlint(ktlintVersion).userData(ktlintUserData)
     }
 
     kotlinGradle {
         target("**/*.gradle.kts")
-        ktlint().userData(ktlintUserData)
+        ktlint(ktlintVersion).userData(ktlintUserData)
     }
 
     freshmark {

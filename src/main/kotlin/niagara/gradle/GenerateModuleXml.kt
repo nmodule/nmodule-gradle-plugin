@@ -94,9 +94,11 @@ open class GenerateModuleXml : DefaultTask() {
         fw.write("\n\n")
         val inputFactory = XMLInputFactory.newInstance()
         val moduleIncludeReader = inputFactory.createXMLEventReader(FileReader(file))
-        ew.add(inputFactory.createFilteredReader(moduleIncludeReader) { ev ->
-            ev.eventType != XMLEvent.START_DOCUMENT && ev.eventType != XMLEvent.END_DOCUMENT
-        })
+        ew.add(
+            inputFactory.createFilteredReader(moduleIncludeReader) { ev ->
+                ev.eventType != XMLEvent.START_DOCUMENT && ev.eventType != XMLEvent.END_DOCUMENT
+            }
+        )
         ew.flush()
         fw.write("\n\n")
     }
