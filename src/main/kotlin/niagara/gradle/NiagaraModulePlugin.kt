@@ -2,10 +2,11 @@ package niagara.gradle
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.language.jvm.tasks.ProcessResources
@@ -62,19 +63,26 @@ class NiagaraModulePlugin : Plugin<Project> {
         }
 
         project.afterEvaluate {
-            jar.get().from(uberjar.map { project.zipTree(it) })
+            jar.get().from(uberjar.map { project.zipTree(it) }) {
+                it.duplicatesStrategy = DuplicatesStrategy.WARN
+            }
         }
 
         val sourcesJar = project.tasks.register("sourcesJar", Jar::class.java) { sourcesJar ->
             sourcesJar.archiveVersion.set("")
             sourcesJar.archiveClassifier.set("sources")
-            val main = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.named("main")
+            val main = project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.named("main")
             sourcesJar.from(main.get().allSource)
         }
 
         val install = project.tasks.register("install", Copy::class.java) { task ->
             task.group = BasePlugin.BUILD_GROUP
-            task.from(jar, sourcesJar)
+            val ext = project.extensions.getByType(NiagaraModuleExtension::class.java)
+            if (ext.installSources) {
+                task.from(jar, sourcesJar)
+            } else {
+                task.from(jar)
+            }
             task.into("$niagaraHome/modules")
         }
 

@@ -14,4 +14,5 @@ open class NiagaraModuleExtension {
     var nre = true
     var installable = true
     var autoload = true
+    var installSources = false
 }
