@@ -4,7 +4,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.BasePlugin
-import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Copy
@@ -85,10 +84,6 @@ class NiagaraModulePlugin : Plugin<Project> {
                 task.from(jar)
             }
             task.into("$niagaraHome/modules")
-        }
-
-        project.tasks.named(JavaBasePlugin.BUILD_TASK_NAME) { task ->
-            task.dependsOn(install)
         }
     }
 }
