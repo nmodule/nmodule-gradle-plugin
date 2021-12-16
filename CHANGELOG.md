@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1]
+### Changed
+- Remove dependency of build on install
+### Fixed
+- Add buildFile into generateModuleXml inputs
+
 ## [0.3.0]
 ### Changed
 - Update gradle to 7.3
