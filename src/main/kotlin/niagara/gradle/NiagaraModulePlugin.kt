@@ -44,6 +44,7 @@ class NiagaraModulePlugin : Plugin<Project> {
             project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME, ProcessResources::class.java).get()
 
         val generateModuleXml = project.tasks.register("generateModuleXml", GenerateModuleXml::class.java) { task ->
+            task.inputs.files(project.buildFile)
             val moduleInclude = File(project.projectDir, "module-include.xml")
             val modulePermissions = File(project.projectDir, "module-permissions.xml")
             if (moduleInclude.exists()) {
