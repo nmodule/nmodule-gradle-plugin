@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.language.jvm.tasks.ProcessResources
@@ -71,7 +71,7 @@ class NiagaraModulePlugin : Plugin<Project> {
         val sourcesJar = project.tasks.register("sourcesJar", Jar::class.java) { sourcesJar ->
             sourcesJar.archiveVersion.set("")
             sourcesJar.archiveClassifier.set("sources")
-            val main = project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.named("main")
+            val main = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.named("main")
             sourcesJar.from(main.get().allSource)
         }
 
