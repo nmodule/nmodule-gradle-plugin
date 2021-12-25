@@ -1,4 +1,7 @@
 # Changelog
+## [0.3.2]
+### Changed
+- Downgrade gradle to 6.9.2
 
 ## [0.3.1]
 ### Changed
