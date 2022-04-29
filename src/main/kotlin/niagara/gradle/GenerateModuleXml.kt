@@ -1,6 +1,5 @@
 package niagara.gradle
 
-import com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.tasks.*
@@ -34,10 +33,11 @@ open class GenerateModuleXml : DefaultTask() {
     fun doGenerate() {
         val factory = XMLOutputFactory.newFactory()
         val fw = FileWriter(outputFile)
-        val sw = IndentingXMLStreamWriter(factory.createXMLStreamWriter(fw))
+        val sw = factory.createXMLStreamWriter(fw)
         val ew = factory.createXMLEventWriter(fw)
         sw.writeStartDocument()
         // module
+        sw.writeCharacters("\n")
         sw.writeStartElement("module")
         sw.writeAttribute("name", option.name)
         sw.writeAttribute("moduleName", option.moduleName)
@@ -53,6 +53,7 @@ open class GenerateModuleXml : DefaultTask() {
         sw.writeAttribute("buildMillis", "${Date().time}")
         sw.writeAttribute("buildHost", "UNKNOWN")
         // dependencies
+        sw.writeCharacters("\n")
         sw.writeStartElement("dependencies")
         val nmodule = project.configurations.getByName("nmodule")
         val nmoduleDepOnly = project.configurations.getByName("nmoduleDepOnly")
@@ -61,6 +62,7 @@ open class GenerateModuleXml : DefaultTask() {
                 it.group?.matches(Regex("^\\w+$")) ?: false
             }
             .forEach { dep ->
+                sw.writeCharacters("\n")
                 sw.writeStartElement("dependency")
                 var suffix = ""
                 if (dep is ModuleDependency) {
@@ -75,13 +77,16 @@ open class GenerateModuleXml : DefaultTask() {
                 sw.writeEndElement()
             }
         if (option.runtimeProfile == "wb") {
+            sw.writeCharacters("\n")
             sw.writeStartElement("dependency")
             sw.writeAttribute("name", "${option.moduleName}-rt")
             sw.writeAttribute("vendor", option.vendor)
             sw.writeAttribute("vendorVersion", option.vendorVersion)
             sw.writeEndElement()
         }
+        sw.writeCharacters("\n")
         sw.writeEndElement()
+        sw.writeCharacters("\n")
         sw.flush()
         moduleInclude?.let { mergeXml(it, fw, ew) }
         modulePermissions?.let { mergeXml(it, fw, ew) }
