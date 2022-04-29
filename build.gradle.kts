@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.restartech"
-version = "0.3.3"
+version = "0.3.3.1"
 
 repositories {
     // maven("https://maven.aliyun.com/repository/central/")
