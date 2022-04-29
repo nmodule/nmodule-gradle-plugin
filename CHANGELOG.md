@@ -1,4 +1,9 @@
 # Changelog
+
+## [0.3.3]
+### Changed
+- Remove usage of IndentingXMLStreamWriter
+
 ## [0.3.2]
 ### Changed
 - Downgrade gradle to 6.9.2
