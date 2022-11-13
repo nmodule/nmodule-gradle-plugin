@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.restartech"
-version = "0.3.3.1"
+version = "0.3.4"
 
 repositories {
     // maven("https://maven.aliyun.com/repository/central/")
@@ -64,7 +64,7 @@ spotless {
 githook {
     hooks {
         create("pre-commit") {
-            shell = "./gradlew.bat check"
+            // task = "check"
         }
     }
 }

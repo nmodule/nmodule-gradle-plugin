@@ -1,5 +1,7 @@
 package niagara.gradle
 
+import org.gradle.api.file.DuplicatesStrategy
+
 const val EXTENSION = "nmodule"
 
 open class NiagaraModuleExtension {
@@ -15,4 +17,5 @@ open class NiagaraModuleExtension {
     var installable = true
     var autoload = true
     var installSources = false
+    var duplicatesStrategy = DuplicatesStrategy.WARN
 }

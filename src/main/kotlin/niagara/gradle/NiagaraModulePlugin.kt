@@ -2,7 +2,6 @@ package niagara.gradle
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginConvention
@@ -63,8 +62,9 @@ class NiagaraModulePlugin : Plugin<Project> {
         }
 
         project.afterEvaluate {
+            val ext = project.extensions.getByType(NiagaraModuleExtension::class.java)
             jar.get().from(uberjar.map { project.zipTree(it) }) {
-                it.duplicatesStrategy = DuplicatesStrategy.WARN
+                it.duplicatesStrategy = ext.duplicatesStrategy
             }
         }
 
