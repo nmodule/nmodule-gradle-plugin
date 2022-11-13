@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.4]
+### Changed
+- Add DuplicatesStrategy configuration
+
 ## [0.3.3]
 ### Changed
 - Remove usage of IndentingXMLStreamWriter
