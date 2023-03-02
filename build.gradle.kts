@@ -1,21 +1,20 @@
 import com.diffplug.spotless.LineEnding
-import java.nio.charset.Charset
 
 plugins {
     kotlin("jvm") version embeddedKotlinVersion
     id("java-gradle-plugin")
     id("maven-publish")
     id("org.jetbrains.changelog") version "1.3.1"
-    id("com.diffplug.spotless") version "5.17.1"
+    id("com.diffplug.spotless") version "6.12.0"
     id("com.star-zero.gradle.githook") version "1.2.1"
     id("com.gradle.plugin-publish") version "0.18.0"
 }
 
 group = "com.restartech"
-version = "0.3.4"
+version = "0.4.0"
 
 repositories {
-    // maven("https://maven.aliyun.com/repository/central/")
+    maven("https://maven.aliyun.com/repository/public/")
     mavenCentral()
 }
 
@@ -38,22 +37,22 @@ pluginBundle {
 }
 
 spotless {
-    encoding = Charset.forName("UTF-8")
-    lineEndings = LineEnding.UNIX
+    lineEndings = com.diffplug.spotless.LineEnding.UNIX
 
-    val ktlintVersion = "0.41.0"
-    val ktlintUserData = mapOf(
-        "disabled_rules" to "no-wildcard-imports,import-ordering"
+    val editorConfigOverride = mapOf(
+        "ij_kotlin_allow_trailing_comma" to true,
+        "ij_kotlin_allow_trailing_comma_on_call_site" to true,
+        "ktlint_disabled_rules" to "no-wildcard-imports",
     )
 
     kotlin {
         target("**/*.kt")
-        ktlint(ktlintVersion).userData(ktlintUserData)
+        ktlint("0.47.1").editorConfigOverride(editorConfigOverride)
     }
 
     kotlinGradle {
         target("**/*.gradle.kts")
-        ktlint(ktlintVersion).userData(ktlintUserData)
+        ktlint("0.47.1").editorConfigOverride(editorConfigOverride)
     }
 
     freshmark {
@@ -64,7 +63,7 @@ spotless {
 githook {
     hooks {
         create("pre-commit") {
-            // task = "check"
+            shell = "./gradlew check"
         }
     }
 }

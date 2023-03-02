@@ -31,7 +31,7 @@ open class GenerateModuleXml : DefaultTask() {
 
     @TaskAction
     fun doGenerate() {
-        val factory = XMLOutputFactory.newFactory()
+        val factory = XMLOutputFactory.newInstance()
         val fw = FileWriter(outputFile)
         val sw = factory.createXMLStreamWriter(fw)
         val ew = factory.createXMLEventWriter(fw)
@@ -102,7 +102,7 @@ open class GenerateModuleXml : DefaultTask() {
         ew.add(
             inputFactory.createFilteredReader(moduleIncludeReader) { ev ->
                 ev.eventType != XMLEvent.START_DOCUMENT && ev.eventType != XMLEvent.END_DOCUMENT
-            }
+            },
         )
         ew.flush()
         fw.write("\n\n")

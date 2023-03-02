@@ -14,7 +14,7 @@ data class ModuleOption(
     var preferredSymbol: String = "",
     var nre: Boolean = true,
     var installable: Boolean = true,
-    var autoload: Boolean = true
+    var autoload: Boolean = true,
 ) : Serializable {
     constructor(project: Project) : this() {
         val ext = project.extensions.getByType(NiagaraModuleExtension::class.java)
