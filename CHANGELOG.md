@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.0]
+### Changed
+-- Update gradle to 7.6.1
+-- Support Java 17
+
 ## [0.3.4]
 ### Changed
 - Add DuplicatesStrategy configuration
