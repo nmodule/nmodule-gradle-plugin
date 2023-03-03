@@ -4,8 +4,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginConvention
-import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.language.jvm.tasks.ProcessResources
 import java.io.File
@@ -68,22 +66,17 @@ class NiagaraModulePlugin : Plugin<Project> {
             }
         }
 
-        val sourcesJar = project.tasks.register("sourcesJar", Jar::class.java) { sourcesJar ->
-            sourcesJar.archiveVersion.set("")
-            sourcesJar.archiveClassifier.set("sources")
-            val main = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.named("main")
-            sourcesJar.from(main.get().allSource)
-        }
-
-        val install = project.tasks.register("install", Copy::class.java) { task ->
+        val install = project.tasks.register("install") { task ->
             task.group = BasePlugin.BUILD_GROUP
-            val ext = project.extensions.getByType(NiagaraModuleExtension::class.java)
-            if (ext.installSources) {
-                task.from(jar, sourcesJar)
-            } else {
-                task.from(jar)
+            task.dependsOn(jar)
+            task.doLast {
+                val niagaraHomeDir = File(niagaraHome as String)
+                val modulesDir = File(niagaraHomeDir, "modules")
+                project.copy {
+                    it.from(jar)
+                    it.into(modulesDir)
+                }
             }
-            task.into("$niagaraHome/modules")
         }
     }
 }
