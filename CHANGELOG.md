@@ -1,9 +1,13 @@
 # Changelog
 
+## [0.4.1]
+### Changed
+- Use project.copy in install task
+
 ## [0.4.0]
 ### Changed
--- Update gradle to 7.6.1
--- Support Java 17
+- Update gradle to 7.6.1
+- Support Java 17
 
 ## [0.3.4]
 ### Changed
