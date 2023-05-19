@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.0]
+### Changed
+- Change env niagara_home to niagara.home and get value from gradle property first
+
 ## [0.4.1]
 ### Changed
 - Use project.copy in install task
