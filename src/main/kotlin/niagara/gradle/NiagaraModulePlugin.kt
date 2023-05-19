@@ -17,7 +17,7 @@ class NiagaraModulePlugin : Plugin<Project> {
 
         project.extensions.extraProperties.set("niagara.home", niagaraHome)
 
-        project.logger.warn("niagara.home=$niagaraHome")
+        project.logger.info("niagara.home=$niagaraHome")
 
         project.plugins.apply("org.jetbrains.kotlin.jvm")
 

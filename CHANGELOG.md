@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.1]
+### Changed
+- Change log level to info
+
 ## [0.5.0]
 ### Changed
 - Change env niagara_home to niagara.home and get value from gradle property first
