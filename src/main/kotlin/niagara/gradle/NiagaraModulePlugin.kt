@@ -12,7 +12,12 @@ const val PLUGIN_ID = "niagara.module"
 
 class NiagaraModulePlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val niagaraHome = System.getenv("niagara_home") ?: project.logger.error("niagara_home env variable not defined")
+        val niagaraHome = project.providers.gradleProperty("niagara.home")
+            .getOrElse(System.getenv("niagara.home"))
+
+        project.extensions.extraProperties.set("niagara.home", niagaraHome)
+
+        project.logger.warn("niagara.home=$niagaraHome")
 
         project.plugins.apply("org.jetbrains.kotlin.jvm")
 
