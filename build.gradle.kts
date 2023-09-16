@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.restartech"
-version = "0.5.1"
+version = "0.6.0"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public/")
