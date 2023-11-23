@@ -34,6 +34,8 @@ class NiagaraModulePlugin : Plugin<Project> {
         }
 
         val nmodule = project.configurations.create("nmodule")
+
+        @Suppress("UNUSED_VARIABLE")
         val nmoduleDepOnly = project.configurations.create("nmoduleDepOnly")
         val uberjar = project.configurations.create("uberjar")
         project.configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME) {
@@ -55,7 +57,11 @@ class NiagaraModulePlugin : Plugin<Project> {
                 task.modulePermissions = modulePermissions
             }
             task.outputFile = File(processResources.destinationDir, "META-INF/module.xml")
-            task.dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+            task.dependsOn(JavaPlugin.COMPILE_JAVA_TASK_NAME)
+        }
+
+        project.tasks.named(JavaPlugin.CLASSES_TASK_NAME) { classes ->
+            classes.dependsOn(generateModuleXml)
         }
 
         val jar = project.tasks.named(JavaPlugin.JAR_TASK_NAME, Jar::class.java) { jar ->
@@ -71,6 +77,7 @@ class NiagaraModulePlugin : Plugin<Project> {
             }
         }
 
+        @Suppress("UNUSED_VARIABLE")
         val install = project.tasks.register("install") { task ->
             task.group = BasePlugin.BUILD_GROUP
             task.dependsOn(jar)

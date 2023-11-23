@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.0]
+### Changed
+- Change task depends: compileJava -> generateModuleXml -> classes
+
 ## [0.6.1]
 ### Changed
 - Update gradle to 8.4
