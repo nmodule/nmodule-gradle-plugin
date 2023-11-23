@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.6.1]
+### Changed
+- Update gradle to 8.4
+
 ## [0.6.0]
 ### Changed
 - Update gradle to 8.2.1
