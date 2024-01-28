@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version embeddedKotlinVersion
+    kotlin("jvm") version "1.9.22"
     id("java-gradle-plugin")
     id("maven-publish")
     id("org.jetbrains.changelog") version "1.3.1"
@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.restartech"
-version = "0.7.0"
+version = "0.7.1"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public/")

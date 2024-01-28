@@ -7,6 +7,7 @@ import org.gradle.api.tasks.Optional
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.xml.stream.XMLEventWriter
 import javax.xml.stream.XMLInputFactory
@@ -52,6 +53,8 @@ open class GenerateModuleXml : DefaultTask() {
         sw.writeAttribute("autoload", "${option.autoload}")
         sw.writeAttribute("buildMillis", "${Date().time}")
         sw.writeAttribute("buildHost", "UNKNOWN")
+        val fmt = SimpleDateFormat("yyyy-MM-dd")
+        sw.writeAttribute("releaseDate", fmt.format(Date()))
         // dependencies
         sw.writeCharacters("\n")
         sw.writeStartElement("dependencies")
