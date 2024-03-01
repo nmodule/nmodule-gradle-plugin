@@ -47,6 +47,7 @@ class NiagaraModulePlugin : Plugin<Project> {
             project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME, ProcessResources::class.java).get()
 
         val generateModuleXml = project.tasks.register("generateModuleXml", GenerateModuleXml::class.java) { task ->
+            task.useProjectsDependencies = setOf("nmodule", "nmoduleDepOnly")
             task.inputs.files(project.buildFile)
             val moduleInclude = File(project.projectDir, "module-include.xml")
             val modulePermissions = File(project.projectDir, "module-permissions.xml")
@@ -77,7 +78,6 @@ class NiagaraModulePlugin : Plugin<Project> {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE")
         val install = project.tasks.register("install") { task ->
             task.group = BasePlugin.BUILD_GROUP
             task.dependsOn(jar)
@@ -86,6 +86,74 @@ class NiagaraModulePlugin : Plugin<Project> {
                 val modulesDir = File(niagaraHomeDir, "modules")
                 project.copy {
                     it.from(jar)
+                    it.into(modulesDir)
+                }
+            }
+        }
+
+        val nmoduleTest = project.configurations.create("nmoduleTest")
+
+        @Suppress("UNUSED_VARIABLE")
+        val nmoduleTestDepOnly = project.configurations.create("nmoduleTestDepOnly")
+
+        project.dependencies.add("nmoduleTestDepOnly", "${project.group}:${project.name}:${project.version}")
+
+        project.configurations.getByName(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME) {
+            it.extendsFrom(nmoduleTest)
+        }
+
+        val processTestResources =
+            project.tasks.named(JavaPlugin.PROCESS_TEST_RESOURCES_TASK_NAME, ProcessResources::class.java).get()
+
+        val generateTestModuleXml = project.tasks.register("generateTestModuleXml", GenerateModuleXml::class.java) { task ->
+
+            task.option.name = "${project.name}Test"
+            task.option.moduleName = "${project.parent?.project?.name}Test"
+            task.option.description = "Tests for ${project.name}"
+
+            task.useProjectsDependencies = setOf("nmoduleTest", "nmoduleTestDepOnly")
+            task.inputs.files(project.buildFile)
+            val moduleInclude = File(project.projectDir, "moduleTest-include.xml")
+            if (moduleInclude.exists()) {
+                task.moduleInclude = moduleInclude
+            }
+            val modulePermissions = File(project.projectDir, "module-permissions.xml")
+            if (modulePermissions.exists()) {
+                task.modulePermissions = modulePermissions
+            }
+            task.outputFile = File(processTestResources.destinationDir, "META-INF/module.xml")
+            task.dependsOn(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME)
+        }
+
+        project.tasks.named(JavaPlugin.TEST_CLASSES_TASK_NAME) { classes ->
+            classes.dependsOn(generateTestModuleXml)
+        }
+
+        val testJar = project.tasks.register("buildTestJar", Jar::class.java) { task ->
+            task.dependsOn(generateTestModuleXml)
+
+            task.from("build/classes/kotlin/test") {
+                it.include("test/**")
+                it.exclude("test/META-INF/**")
+            }
+
+            task.from("build/resources/test") {
+                it.include("META-INF/module.xml")
+            }
+
+            task.archiveFileName.set("${project.name}Test.jar")
+        }
+
+        @Suppress("UNUSED_VARIABLE")
+        val installTest = project.tasks.register("installTest") { task ->
+            task.group = BasePlugin.BUILD_GROUP
+            task.dependsOn(testJar)
+            task.dependsOn(install)
+            task.doLast {
+                val niagaraHomeDir = File(niagaraHome as String)
+                val modulesDir = File(niagaraHomeDir, "modules")
+                project.copy {
+                    it.from(testJar)
                     it.into(modulesDir)
                 }
             }
