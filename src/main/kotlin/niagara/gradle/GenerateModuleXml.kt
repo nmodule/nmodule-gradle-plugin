@@ -1,6 +1,7 @@
 package niagara.gradle
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.tasks.*
 import org.gradle.api.tasks.Optional
@@ -18,6 +19,9 @@ open class GenerateModuleXml : DefaultTask() {
 
     @Input
     val option: ModuleOption = ModuleOption(project)
+
+    @Input
+    var useProjectsDependencies = emptySet<String>()
 
     @InputFile
     @Optional
@@ -58,9 +62,9 @@ open class GenerateModuleXml : DefaultTask() {
         // dependencies
         sw.writeCharacters("\n")
         sw.writeStartElement("dependencies")
-        val nmodule = project.configurations.getByName("nmodule")
-        val nmoduleDepOnly = project.configurations.getByName("nmoduleDepOnly")
-        (nmodule.dependencies + nmoduleDepOnly.dependencies)
+
+        useProjectsDependencies.map { project.configurations.getByName(it).dependencies }
+            .fold(emptySet<Dependency>()) { mergedSets, nextSet -> mergedSets + nextSet }
             .filter {
                 it.group?.matches(Regex("^\\w+$")) ?: false
             }
