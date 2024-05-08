@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.0]
+### Changed
+- Update gradle to 8.7
+- com.gradle.plugin-publish to 1.2.1
+- set java sourceCompatibility and targetCompatibility
+
 ## [0.7.0]
 ### Changed
 - Change task depends: compileJava -> generateModuleXml -> classes
