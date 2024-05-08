@@ -1,9 +1,11 @@
 package niagara.gradle
 
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.language.jvm.tasks.ProcessResources
 import java.io.File
@@ -27,6 +29,11 @@ class NiagaraModulePlugin : Plugin<Project> {
         }
 
         project.extensions.create(EXTENSION, NiagaraModuleExtension::class.java)
+
+        project.extensions.getByType(JavaPluginExtension::class.java).apply {
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
+        }
 
         project.repositories.flatDir {
             it.dir("$niagaraHome/bin/ext")
