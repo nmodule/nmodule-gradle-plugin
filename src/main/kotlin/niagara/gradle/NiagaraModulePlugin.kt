@@ -15,7 +15,7 @@ const val PLUGIN_ID = "niagara.module"
 class NiagaraModulePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val niagaraHome = project.providers.gradleProperty("niagara.home")
-            .getOrElse(System.getenv("niagara.home"))
+            .getOrElse(System.getenv("niagara_home"))
 
         project.extensions.extraProperties.set("niagara.home", niagaraHome)
 
