@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.0]
+### Changed
+- Update gradle to 8.11.1
+- com.gradle.plugin-publish to 1.3.0
+- Update kotlin to 2.1.0
+
 ## [0.8.0]
 ### Changed
 - Update gradle to 8.7

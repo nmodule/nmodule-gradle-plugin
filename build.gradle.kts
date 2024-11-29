@@ -1,15 +1,15 @@
 plugins {
-    kotlin("jvm") version "1.9.24"
+    kotlin("jvm") version "2.1.0"
     id("java-gradle-plugin")
     id("maven-publish")
     id("org.jetbrains.changelog") version "1.3.1"
     id("com.diffplug.spotless") version "6.25.0"
     id("com.star-zero.gradle.githook") version "1.2.1"
-    id("com.gradle.plugin-publish") version "1.2.1"
+    id("com.gradle.plugin-publish") version "1.3.0"
 }
 
 group = "com.restartech"
-version = "0.8.0"
+version = "0.9.0"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public/")
